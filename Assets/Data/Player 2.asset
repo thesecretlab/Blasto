@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63cc8bf46dd61461a9959d6c2d8de683, type: 3}
+  m_Name: Player 2
+  m_EditorClassIdentifier: 
+  playerNumber: 2
+  turnLeftKey: 276
+  turnRightKey: 275
+  increaseThrustKey: 273
+  decreaseThrustKey: 274
+  fireKey: 13
+  boostKey: 303
+  color: {r: 0.27058825, g: 0.3019608, b: 0.8862745, a: 1}
