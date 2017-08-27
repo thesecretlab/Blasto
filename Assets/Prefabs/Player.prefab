@@ -319,7 +319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a4ec6bf69c524e4b9aa0f66a1a9c2bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turnSpeed: 1000
+  turnSpeed: 2000
   speed: 500
   boostImpulse: 10000
   dustTrail: {fileID: 198544402223162788}
