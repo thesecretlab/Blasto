@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Ignore 'this variable is never written to' warnings, 
+// because Unity will be setting them externally.
+#pragma warning disable 0649
+
 // The PlayerInput class takes raw input from the user, and converts it to a 
 // simpler form that the rest of the game can use.
 public class PlayerInput : MonoBehaviour {

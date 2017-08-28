@@ -6,7 +6,8 @@
 // - no texture
 
 // This is a modified version that uses the stencil buffer to prevent overlapping. 
-// This means that alpha values will not stack, and the objects will have a single, consistent, transparent color.
+// This means that alpha values will not stack, and the objects will have a single, 
+// consistent, transparent color.
 
 Shader "Unlit/Transparent Color" {
 	Properties {
@@ -28,7 +29,9 @@ Shader "Unlit/Transparent Color" {
             {
                 Ref 1 // using this value...
                 Comp Greater // only render if 'Ref' is greater than the current value in the buffer
-                Pass Replace // set '1' into the stencil buffer
+                Pass Replace // set 'Ref' into the stencil buffer; this means that no
+                             // more drawing of this material will happen on this pixel,
+                             // which means that transparent colours will not overlap
             }
 
 	        CGPROGRAM

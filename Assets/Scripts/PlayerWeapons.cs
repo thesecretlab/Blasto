@@ -86,32 +86,40 @@ public class PlayerWeapons : MonoBehaviour {
             // Get the currently selected fire point.
             var firePoint = firePoints[currentFirePoint];
 
+            // Fire a shot if we have the prefab
+            if (shotPrefab != null) {
+                
+				// Create the new shot
+				var newShot = Instantiate(shotPrefab, firePoint.position, firePoint.rotation);
 
-            // Create the new shot
-            var newShot = Instantiate(shotPrefab, firePoint.position, firePoint.rotation);
+				// Pass along the configuration if we have one
+				if (configuration != null)
+				{
+					newShot.owner = configuration;
+					newShot.name += string.Format(" (from Player {0})",
+												  configuration.playerNumber.ToString());
+				}
 
-            // Pass along the configuration if we have one
-            if (configuration != null)
-            {
-                newShot.owner = configuration;
-                newShot.name += string.Format(" (from Player {0})", 
-                                              configuration.playerNumber.ToString());
+				// Make this shot not collide with the ship's collider
+				var myCollider = GetComponentInChildren<Collider>();
+				var shotCollider = newShot.GetComponentInChildren<Collider>();
+
+				Physics.IgnoreCollision(myCollider, shotCollider);
+
+            } else {
+                Debug.LogWarning("PlayerWeapons can't create shot: prefab wasn't connected.");
             }
-
-            // Make this shot not collide with the ship's collider
-            var myCollider = GetComponentInChildren<Collider>();
-            var shotCollider = newShot.GetComponentInChildren<Collider>();
-
-            Physics.IgnoreCollision(myCollider, shotCollider);
 
 			// Move to the next fire point
 			currentFirePoint += 1;
 
-            // Wrap back to zero if we've reached the end of the list
+			// Wrap back to zero if we've reached the end of the list
 			currentFirePoint %= firePoints.Length;
 
 			// Wait until 'timeBetweenShots' before we can fire again
 			timeUntilNextShot = timeBetweenShots;
+
+
         }
 
 

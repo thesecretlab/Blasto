@@ -32,12 +32,11 @@ public class PlayerMovement : MonoBehaviour {
 	[SerializeField]
     float dustSpeedThreshold = 20;
 
-	// --- Private variables ---
+    // --- Private variables ---
 
-	// The input object; we'll be using this to find out what the player
-	// wants to do.
-	PlayerInput input;
-
+    // The input object; we'll be using this to find out what the player
+    // wants to do.
+    PlayerInput input;
 
     // The rigidbody that moves in response to physical forces.
     Rigidbody body;
@@ -84,12 +83,18 @@ public class PlayerMovement : MonoBehaviour {
 
         // If we're going fast enough, enable the dust particles.
         // Otherwise, stop them.
-        if (currentSpeed > dustSpeedThreshold) {
-            dustTrail.Play();
-        } else {
-            // Stop emitting particles, but let existing ones fade out.
-            dustTrail.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        if (dustTrail != null) {
+			if (currentSpeed > dustSpeedThreshold)
+			{
+				dustTrail.Play();
+			}
+			else
+			{
+				// Stop emitting particles, but let existing ones fade out.
+				dustTrail.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+			}
         }
+
 	}
 
 

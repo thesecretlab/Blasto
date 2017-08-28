@@ -66,8 +66,10 @@ public class PlayerHealth : MonoBehaviour {
         // We start out with 'startingHealth' hit points.
         currentHealth = startingHealth;
 
-        // Ensure that the smoke particles are not visible
-        smokeParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        if (smokeParticles != null) {
+            // Ensure that the smoke particles are not visible
+            smokeParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+		}
 
         // Become invincible for a while after we first appear
         StartCoroutine(BecomeInvincible(spawnInvincibilityTime));
@@ -94,7 +96,7 @@ public class PlayerHealth : MonoBehaviour {
         currentHealth -= amount;
 
         // Start the smoke system if health <= 50%
-        if (smokeParticles.isStopped) {
+        if (smokeParticles != null && smokeParticles.isStopped) {
             var healthPercentage = currentHealth / (float)startingHealth;
 
             if (healthPercentage <= smokeVisibilityTreshold) {

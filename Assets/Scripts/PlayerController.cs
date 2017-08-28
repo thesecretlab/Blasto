@@ -76,15 +76,49 @@ public class PlayerController : MonoBehaviour {
         currentAvatar = Instantiate(avatarPrefab, selectedSpawn.position, selectedSpawn.rotation);
 
         // Configure the components on the avatar.
-        currentAvatar.GetComponent<PlayerInput>().configuration = config;
-        currentAvatar.GetComponent<PlayerAppearance>().configuration = config;
-        currentAvatar.GetComponent<PlayerWeapons>().configuration = config;
+        var input = currentAvatar.GetComponent<PlayerInput>();
+        var appearance = currentAvatar.GetComponent<PlayerAppearance>();
+        var weapons = currentAvatar.GetComponent<PlayerWeapons>();
+        var health = currentAvatar.GetComponent<PlayerHealth>();
 
-        // When the avatar reports that it's died, run this delegate.
-        currentAvatar.GetComponent<PlayerHealth>().onDeath = delegate {
-            // Respawn after a the right amount of time.
-            StartCoroutine(SpawnAfterDelay(spawnDelay)); 
-        }; 
+        if (input != null)
+        {
+            input.configuration = config;
+        }
+        else
+        {
+            Debug.LogWarningFormat("{0} can't configure input: not present on the prefab", this.name);
+        }
+
+        if (appearance != null)
+        {
+            appearance.configuration = config;
+        }
+        else
+        {
+            Debug.LogWarningFormat("{0} can't configure appearance: not present on the prefab", this.name);
+        }
+
+        if (weapons != null)
+        {
+            weapons.configuration = config;
+        }
+        else
+        {
+            Debug.LogWarningFormat("{0} can't configure weapons: not present on the prefab", this.name);
+        }
+
+        if (health) {
+			// When the avatar reports that it's died, run this delegate.
+			currentAvatar.GetComponent<PlayerHealth>().onDeath = delegate {
+				// Respawn after a the right amount of time.
+				StartCoroutine(SpawnAfterDelay(spawnDelay));
+			};
+        } else {
+            Debug.LogWarningFormat("{0} can't configure health: not present on the prefab", this.name);
+        }
+
+         
     }
 
     // Called by other objects to give a point to this player.

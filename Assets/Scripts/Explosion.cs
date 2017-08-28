@@ -8,11 +8,6 @@ using UnityEngine;
 
 // An Explosion shows a visual explosion, deals damage, and pushes objects away.
 // They're created when shots hit anything, and when a player dies.
-
-// Execute in Edit Mode because we want 'OnWillRenderObject' to run in the scene view.
-// (Doing this means that we need to test for 'Application.isPlaying' in some cases,
-// because we don't want certain gameplay-related things to happen except in Play Mode.)
-[ExecuteInEditMode]
 public class Explosion : MonoBehaviour {
 
     // --- Inspector fields ---
@@ -37,6 +32,7 @@ public class Explosion : MonoBehaviour {
 	int damageAmount = 1;
 
     [Header("Appearance")]
+
 	// The degree to which the position will be randomised.
 	[SerializeField]
 	float positionJitter = 1.0f;
@@ -58,12 +54,7 @@ public class Explosion : MonoBehaviour {
 
     // Called when the explosion first appears.
     public IEnumerator Start() {
-
-        if (Application.isPlaying == false) {
-            // Don't do anything if we're in Edit mode
-            yield break;
-        }
-
+        
         var offset = Random.onUnitSphere * positionJitter;
         transform.position += offset;
 
@@ -137,23 +128,4 @@ public class Explosion : MonoBehaviour {
 
     }
 
-    // Called by Unity just before a camera renders this object.
-    void OnWillRenderObject()
-    {
-        // In this method, we'll rotate to face the camera that's rendering.
-        // This means that we'll always be looking at the sprite face-on. 
-        // (This is sometimes called 'billboard' rendering)
-
-        // Camera.current is whatever camera we're rendering with
-        // In the editor, there are two: the Camera object that the
-        // player views through, and also the Scene camera, which is what
-        // we see the camera through
-        var renderCamera = Camera.current;
-
-        // Rotate ourselves to look at this camera
-		transform.LookAt(
-            transform.position + renderCamera.transform.rotation * Vector3.forward,
-            renderCamera.transform.rotation * Vector3.up
-        );
-    }
 }

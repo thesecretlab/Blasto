@@ -45,13 +45,22 @@ public class Shot : MonoBehaviour {
     void OnCollisionEnter(Collision collision)
     {
 
-        // Instantiate our explosion
-        var explosion = Instantiate(explosionPrefab, transform.position, transform.rotation);
+        // Create an explosion if we have one
+        if (explosionPrefab != null)
+        {
+            // Instantiate our explosion
+            var explosion = Instantiate(explosionPrefab, transform.position, transform.rotation);
 
-        // If we have an owner, associate the explosion with that owner.
-        if (owner != null) {
-            explosion.owner = owner;
-            explosion.name += string.Format(" (from Player {0}", owner.playerNumber);
+            // If we have an owner, associate the explosion with that owner.
+            if (owner != null)
+            {
+                explosion.owner = owner;
+                explosion.name += string.Format(" (from Player {0}", owner.playerNumber);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Shot can't create explosion: no prefab connected");
         }
 
         // Remove this shot from the game.
