@@ -22,6 +22,9 @@ public class PlayerWeapons : MonoBehaviour {
     [SerializeField] 
     float timeBetweenShots = 0.01f;
 
+	[SerializeField]
+	SoundManager.Effect fireEffect;
+
     // --- Private variables ---
 
 	// The list of transforms, attached to this object, from which
@@ -83,8 +86,13 @@ public class PlayerWeapons : MonoBehaviour {
 				return;
 			}
 
+
             // Get the currently selected fire point.
             var firePoint = firePoints[currentFirePoint];
+
+			// Play the fire sound effect at the fire point.
+			SoundManager.instance.PlaySound(fireEffect, firePoint.position);
+
 
             // Fire a shot if we have the prefab
             if (shotPrefab != null) {

@@ -69,6 +69,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: ee60df416999c4a1b83d3d0f41b6ae20, type: 3}
   - {fileID: 21300000, guid: 8453208acbf2041069ab6f06ebef25bd, type: 3}
   framesPerSecond: 30
+  soundEffect: 3
   owner: {fileID: 0}
 --- !u!114 &114757268368432736
 MonoBehaviour:
@@ -90,6 +91,7 @@ SpriteRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -105,6 +107,7 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5

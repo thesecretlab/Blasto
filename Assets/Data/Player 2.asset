@@ -19,3 +19,5 @@ MonoBehaviour:
   fireKey: 13
   boostKey: 303
   color: {r: 0.27058825, g: 0.3019608, b: 0.8862745, a: 1}
+  pilotPrefab: {fileID: 1275577210744698, guid: 44aeaeb1288514047bba1c74bdfe2fdc,
+    type: 2}

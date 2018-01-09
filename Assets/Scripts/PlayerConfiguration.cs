@@ -33,4 +33,7 @@ public class PlayerConfiguration : ScriptableObject
 
     // The colour to appear as, in both the game and in the UI.
 	public Color color;
+
+	// The 'pilot', who's thrown out of the spaceship when it's destroyed
+	public GameObject pilotPrefab;
 }

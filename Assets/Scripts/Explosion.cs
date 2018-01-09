@@ -45,6 +45,9 @@ public class Explosion : MonoBehaviour {
 	[SerializeField]
 	float framesPerSecond = 30;
 
+	[SerializeField]
+	SoundManager.Effect soundEffect;
+
     // --- Public variables ---
 
     // The information representing the player who caused this explosion.
@@ -54,6 +57,9 @@ public class Explosion : MonoBehaviour {
 
     // Called when the explosion first appears.
     public IEnumerator Start() {
+
+		// Play our sound effect 
+		SoundManager.instance.PlaySound(soundEffect, transform.position);
         
         var offset = Random.onUnitSphere * positionJitter;
         transform.position += offset;

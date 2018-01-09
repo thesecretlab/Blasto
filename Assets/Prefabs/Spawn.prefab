@@ -93,7 +93,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1530390412873678}
   m_LocalRotation: {x: -0, y: 0.3530707, z: -0, w: 0.9355967}
-  m_LocalPosition: {x: -97.7, y: 0, z: -92.6}
+  m_LocalPosition: {x: -88.4, y: 0, z: -82}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4018221087382112}
@@ -110,6 +110,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -127,6 +128,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -151,9 +153,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: b6c02cbf5bb4231418039d0e0c27ee9b, type: 3}
 --- !u!114 &114781461899549260
@@ -167,4 +169,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a987f215d280946249f7bc2deb7214e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _exclusionRadius: 20
   _spawnPointTransform: {fileID: 4304566584080922}

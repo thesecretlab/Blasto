@@ -35,6 +35,10 @@ public class PlayerController : MonoBehaviour {
 	[SerializeField]
 	float spawnDelay = 1.0f;
 
+	// The sound effect to play when a player respawns.
+	[SerializeField]
+	SoundManager.Effect respawnEffect;
+
     // --- Private variables ---
 
     // The current avatar for this player in the game.
@@ -58,24 +62,25 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    // Creates a new avatar for this player.
-    void Spawn() {
+	// Creates a new avatar for this player.
+	void Spawn(bool isFirstSpawn = false) {
 
-        // Get the list of all spawn points in the game.
-        var allSpawnPoints = FindObjectsOfType<SpawnPoint>();
-
-        // Pick a random spawn
-        var selectedSpawn = allSpawnPoints[UnityEngine.Random.Range(0, allSpawnPoints.Length)];
-
+		var selectedSpawn = SpawnPoint.GetRandomAvailableSpawnPoint ();
+        
         // Get rid of the old avatar if it's still around
         if (currentAvatar != null) {
             Destroy(currentAvatar.gameObject);
         }
 
-        // Our new avatar is an instance of the avatar prefab.
+		// Our new avatar is an instance of the avatar prefab.
         currentAvatar = Instantiate(avatarPrefab, selectedSpawn.position, selectedSpawn.rotation);
 
-        // Configure the components on the avatar.
+		// If this is a REspawn, play the sound effect at this location
+		if (isFirstSpawn == false) {
+			SoundManager.instance.PlaySound (respawnEffect, currentAvatar.transform.position);
+		}
+
+		// Configure the components on the avatar.
         var input = currentAvatar.GetComponent<PlayerInput>();
         var appearance = currentAvatar.GetComponent<PlayerAppearance>();
         var weapons = currentAvatar.GetComponent<PlayerWeapons>();
@@ -111,8 +116,12 @@ public class PlayerController : MonoBehaviour {
         if (health) {
 			// When the avatar reports that it's died, run this delegate.
 			currentAvatar.GetComponent<PlayerHealth>().onDeath = delegate {
-				// Respawn after a the right amount of time.
+
+				// Respawn this player after a the right amount of time.
 				StartCoroutine(SpawnAfterDelay(spawnDelay));
+
+				CreatePilot ();
+
 			};
         } else {
             Debug.LogWarningFormat("{0} can't configure health: not present on the prefab", this.name);
@@ -120,6 +129,13 @@ public class PlayerController : MonoBehaviour {
 
          
     }
+
+	// The force with which 
+	[SerializeField]
+	float _pilotEjectionForce = 2.0f;
+
+	[SerializeField]
+	float _pilotDespawnTime = 3.0f;
 
     // Called by other objects to give a point to this player.
     public void DestroyedOtherPlayer()
@@ -167,17 +183,63 @@ public class PlayerController : MonoBehaviour {
     // Called when the player first appears.
     void Start() {
 
-        // Make our label show the correct color
-        if (playerLabel != null)
-            playerLabel.color = config.color;
+		// Make our label show the correct color
+		if (playerLabel != null)
+			playerLabel.color = config.color;
 
-        // Set our score to zero; this will also update the label
-        score = 0;
+		// Set our score to zero; this will also update the label
+		score = 0;
 
-        // Spawn the player immediately (without waiting).
-        Spawn();
+		// Spawn the player immediately (without waiting); indicate that this is the first
+		// time it's happened.
+		Spawn(true);
     }
 
+	// True if the player is currently alive.
+	public bool isSpawned {
+		get {
+			return this.currentAvatar != null;
+		}
+	}
+
+	// The position of the player.
+	public Vector3 position {
+		get {
+			if (isSpawned == false) {
+				throw new InvalidOperationException ("Can't get the position of a dead player. " +
+					"Check the isSpawned property first.");
+			}
+			return this.currentAvatar.transform.position;
+		}
+	}
 
 
+	void CreatePilot ()
+	{
+		// Bail out if we don't have a prefab to use.
+		if (config.pilotPrefab == null) {
+			return;
+		}
+
+		// Immediately spawn the pilot
+		var prefab = config.pilotPrefab;
+		var pilot = Instantiate (prefab, currentAvatar.transform.position, currentAvatar.transform.rotation);
+		var pilotBody = pilot.GetComponentInChildren<Rigidbody> ();
+
+		// Ensure that the pilot never collides with the current avatar
+		var pilotCollider = pilot.GetComponentInChildren<Collider>();
+		var avatarCollider = currentAvatar.GetComponentInChildren<Collider> ();
+		Physics.IgnoreCollision (pilotCollider, avatarCollider);
+
+		// Throw the pilot forward
+		var throwDirection = (currentAvatar.transform.forward).normalized;
+		var throwForce = throwDirection * _pilotEjectionForce;
+		pilotBody.AddForce (throwForce);
+
+		// Spin the pilot randomly
+		pilotBody.AddTorque (UnityEngine.Random.insideUnitSphere * _pilotEjectionForce * 2);
+
+		// Destroy this pilot after a delay
+		Destroy (pilot.gameObject, _pilotDespawnTime);
+	}
 }
